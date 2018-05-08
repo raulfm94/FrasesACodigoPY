@@ -274,9 +274,10 @@ def print_tuple(tokens):
     print "\n"
 
 
-if __name__ == "__main__":
-    file_name = "../tokens.txt"
-    tokens = tokenize(file_name)
-    print_tuple(tokens)
-    print build_code_string(tokens)
-    print_to_file(build_code_string(tokens))
+def convert_to_code():
+    if __name__ == "__main__":
+        file_name = "../tokens.txt"
+        tokens = tokenize(file_name)
+        # print_tuple(tokens)
+        # print build_code_string(tokens)
+        print_to_file(build_code_string(tokens))
