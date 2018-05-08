@@ -31,7 +31,7 @@ def tokens_from_file(name_of_file):
 #         print ("A tuple", item)
 #     for a, b in tokens:
 #         print ("First", a, "then", b)
-#     print(tokens[1]) 
+#     print(tokens[1])
 
 iterator = 0
 
@@ -42,10 +42,10 @@ def empatar():
 # Class -> Class_Definition Attribute_Definition Functions
 def classs(tokens):
     res = False
-    if class_definition(tokens) and attribute_definition and functions:
+    if class_definition(tokens) and attribute_definition(tokens) and functions(tokens):
         res = True
-    return res        
-    
+    return res
+
 # Class_Definition -> Noun "ASSIGN" "CLASS"
 def class_definition(tokens):
     if noun(tokens):
@@ -58,23 +58,23 @@ def class_definition(tokens):
 
 # Attribute_Definition -> "PRP" "OWN" Attribute_Cycle
 def attribute_definition(tokens):
+    res = False
     if tokens[iterator][1] == "PRP":
         empatar()
-        if tokens[iterator][1] == "VBD":
+        if tokens[iterator][1] == "OWN":
             empatar()
-            if atribute(tokens):
-                return True
-    return False
+            res = attribute_cycle(tokens)
+    return res
 
 #Attribute_Cycle -> Attribute [ "," Attribute_Cycle ]
-def attribute_Cycle(tokens):
-    res =  False
-    if attibute(tokens):
+def attribute_cycle(tokens):
+    res = False
+    if attribute(tokens):
         res = True
         if tokens[iterator][1] == ",":
             empatar()
             res = False
-            if Attribute_Cycle(tokens):
+            if attribute_cycle(tokens):
                 res = True
     return res
 
@@ -94,7 +94,7 @@ def attribute(tokens):
 # Functions -> Function_Declarations Function_Definition_Cycle
 def functions(tokens):
     res = False
-    if function_declaration(tokens) and function_definition_cycle(tokens):
+    if function_declaration(tokens) and function_definition_cicle(tokens):
         res = True
     return res
 
@@ -103,10 +103,8 @@ def function_declaration(tokens):
     res = False
     if tokens[iterator][1] == "PRP":
         empatar()
-        if tokens[iterator][1] == "MD":
-            empatar()
-            if proper_noun_cycle(tokens):
-                res = True
+        if proper_noun_cycle(tokens):
+            res = True
     return res
 
 # Function_Definition_Cycle -> Function_Definition [ "," Function_Definition_Cycle ]
@@ -132,7 +130,7 @@ def function_definition(tokens):
 # Function_Parameters -> "PRP" "PARAMVERB" NounCycle
 def function_parameters(tokens):
     res = False
-    if tokens[iterator][1] == "PRP":
+    if tokens[iterator][1] == "PRP" and tokens[iterator+1][1] == "PARAMVERB":
         empatar()
         if tokens[iterator][1] == "PARAMVERB":
             empatar()
@@ -148,17 +146,14 @@ def function_print(tokens):
         res = any_token_cycle(tokens)
     return res
 
-# Function_Body -> "PRP" "BODYVERB" FBody_Cycle [ "RETURN" Basic_Type ]
+# Function_Body -> FBody_Cycle [ "RETURN" Basic_Type ]
 def function_body(tokens):
     res = False
-    if tokens[iterator][1] == "PRP":
-        empatar()
-        if tokens[iterator][1] == "BODYVERB":
+    if f_Body_cycle(tokens):
+        res = True
+        if tokens[iterator][1] == "RETURN":
             empatar()
-            res = f_Body_cycle(tokens)
-            if tokens[iterator][1] == "RETURN":
-                empatar()
-                res = basic(tokens)
+            res = basic(tokens)
     return res
 
 # FBody_Cycle -> ( Function_Call | Action ) [ "," FBody_Cycle ]
@@ -168,20 +163,25 @@ def f_Body_cycle(tokens):
         res = True
         if tokens[iterator][1] == ",":
             empatar()
-            res = f_Body_cycle(tokens)
+            if f_Body_cycle(tokens):
+                res = True
     return res
 
-# Function_Call -> Noun [ "PARL" [ any_basic ] "PARR" ]
+# Function_Call -> Noun [ "PARL" [ argument_cycle ] "PARR" ]
 def function_call(tokens):
     res = False
-    if noun(tokens):
-        res = True
-        if tokens[iterator][1] == "PARL":
+    if tokens[iterator][1] == "PRP":
+        empatar()
+        if tokens[iterator][1] == "BODYVERB":
             empatar()
-            argument_Cycle(tokens)
-            if tokens[iterator][1] == "PARR":
-                empatar()
+            if noun(tokens):
                 res = True
+                if tokens[iterator][1] == "PARL":
+                    empatar()
+                    argument_cycle(tokens)
+                    if tokens[iterator][1] == "PARR":
+                        empatar()
+                        res = True
     return res
 
 # AnyTokenCycle -> AnyToken [ AnyTokenCycle ]
@@ -196,37 +196,43 @@ def any_token_cycle(tokens):
 def any_token(tokens):
     res = True
     while tokens[iterator][1] != "," or tokens[iterator][1] != "PTRSTOP":
-            empatar()
+        empatar()
     empatar()
     return res
-        
+
 # proper_noun_cycle -> Noun [ "," proper_noun_cycle ]
 def proper_noun_cycle(tokens):
     res = False
     if noun(tokens):
         res = True
         if tokens[iterator][1] == ",":
+            empatar()
             res = False
             if proper_noun_cycle(tokens):
                 res = True
     return res
 
-# any_basic -> Basic_Type [ "," any_basic ]
-def any_basic(tokens):
+# argument_cycle -> Basic_Type [ "," any_basic ]
+def argument_cycle(tokens):
     res = False
     if basic(tokens):
         res = True
         if tokens[iterator][1] == ",":
             empatar()
-            res = any_basic(tokens)
+            res = argument_cycle(tokens)
     return res
 
-# Action -> ( "ADD" | "SUBSTRACT" | "ASSIGN" ) Basic_Type
+# Action -> "PRP$" Noun ( "ADD" | "SUBS" | "ASSIGN" ) Basic_Type
 def action(tokens):
     res = False
-    if tokens[iterator][1] == "ADD" or tokens[iterator][1] == "SUBSTRACT" or tokens[iterator][1] == "ASSIGN":
+    if tokens[iterator][1] == "PRP$":
         empatar()
-        res = basic(tokens)
+        if noun(tokens):
+            res = True
+            if tokens[iterator][1] == "ADD" or tokens[iterator][1] == "SUBS" or tokens[iterator][1] == "ASSIGN":
+                empatar()
+                if basic(tokens):
+                    res = True
     return res
 
 # Basic_Type -> Number | String | Noun | Boolean
@@ -242,7 +248,7 @@ def noun(tokens):
     if tokens[iterator][1] == "NNP" or tokens[iterator][1] == "NN":
         empatar()
         res = True
-    return res    
+    return res
 
 # String -> "STRSTART [ Content ] STRSTOP"
 def string(tokens):
@@ -279,9 +285,9 @@ def pair(tokens):
     res = False
     if tokens[iterator][1] == "PARL":
         empatar()
-        if number(tokens) and tokens[iterator][1] == "CD":
+        if tokens[iterator][1] == "CD":
             empatar()
-            if number(tokens) and tokens[iterator][1] == "PARR":
+            if tokens[iterator][1] == "PARR":
                 empatar()
                 res = True
     return res
@@ -301,15 +307,14 @@ def aray(tokens):
 def sintactico(source):
     name_of_file = "tokens.txt"
     tokens  = tokens_from_file(name_of_file)
-    return classs(tokens)            
-        
+    return classs(tokens)
+
 if __name__ == "__main__":
     name_of_file = "tokens.txt"
     tokens  = tokens_from_file(name_of_file)
     #access_to_touple(tokens)
-    #print(tokens)
+    print(tokens)
     #print(tokens[iterador][1])
-    #print(classs(tokens))
-    
+    print(classs(tokens))
 
-    
+
