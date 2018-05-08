@@ -22,8 +22,11 @@ def tokens_from_file(name_of_file):
                     word = ""
                 if(read == True):
                     word += ch
+        list1.append('')
+        list2.append('')
     zipped = zip(list2,list1,)
     file.close()
+    print(zip)
     return list(zipped)
 
 # def access_to_touple(tokens):
@@ -91,10 +94,10 @@ def attribute(tokens):
                 res = False
     return res
 
-# Functions -> Function_Declarations Function_Definition_Cycle
+# Functions -> Function_Declarations Function_Definition
 def functions(tokens):
     res = False
-    if function_declaration(tokens) and function_definition_cicle(tokens):
+    if function_declaration(tokens) and function_definition(tokens):
         res = True
     return res
 
@@ -103,7 +106,7 @@ def function_declaration(tokens):
     res = False
     if tokens[iterator][1] == "PRP":
         empatar()
-        if proper_noun_cycle(tokens):
+        if noun_cycle(tokens):
             res = True
     return res
 
@@ -116,7 +119,7 @@ def function_definition_cicle(tokens):
         res = function_definition_cicle(tokens)
     return res
 
-# Function_Definition_Cycle -> Function_Definition [ "," Function_Definition_Cycle ]
+# Function_Definition -> "TO" Noun [Function_Parameters] ( Function_Body | Function_Print) [Function_Definition]
 def function_definition(tokens):
     res = False
     if tokens[iterator][1] == "TO":
@@ -125,6 +128,7 @@ def function_definition(tokens):
             function_parameters(tokens)
             if function_body(tokens) or function_print(tokens):
                 res = True
+                function_definition(tokens)
     return res
 
 # Function_Parameters -> "PRP" "PARAMVERB" NounCycle
@@ -134,16 +138,18 @@ def function_parameters(tokens):
         empatar()
         if tokens[iterator][1] == "PARAMVERB":
             empatar()
-            if proper_noun_cycle(tokens):
+            if noun_cycle(tokens):
                 res = True
     return res
 
-# Function_Print -> "PRINT" AnyTokenCycle
+# Function_Print -> "PRP" "PRINT" AnyTokenCycle
 def function_print(tokens):
     res = False
-    if tokens[iterator][1] == "PRINT":
+    if tokens[iterator][1] == "PRP" and tokens[iterator+1][1] == "PRINT":
         empatar()
-        res = any_token_cycle(tokens)
+        if tokens[iterator][1] == "PRINT":
+            empatar()
+            res = any_token_cycle(tokens)
     return res
 
 # Function_Body -> FBody_Cycle [ "RETURN" Basic_Type ]
@@ -167,7 +173,7 @@ def f_Body_cycle(tokens):
                 res = True
     return res
 
-# Function_Call -> Noun [ "PARL" [ argument_cycle ] "PARR" ]
+# Function_Call -> "PRP" "BODYVERB" Noun [ "PARL" [ Argument_Cycle ] "PARR" ]
 def function_call(tokens):
     res = False
     if tokens[iterator][1] == "PRP":
@@ -177,6 +183,7 @@ def function_call(tokens):
             if noun(tokens):
                 res = True
                 if tokens[iterator][1] == "PARL":
+                    res = False
                     empatar()
                     argument_cycle(tokens)
                     if tokens[iterator][1] == "PARR":
@@ -192,7 +199,7 @@ def any_token_cycle(tokens):
     return res
 
 
-# AnyToken -> (All tokens until "," or End of Sentence)
+# AnyToken -> (All tokens until "," or "PTRSTOP")
 def any_token(tokens):
     res = True
     while tokens[iterator][1] != "," or tokens[iterator][1] != "PTRSTOP":
@@ -200,19 +207,19 @@ def any_token(tokens):
     empatar()
     return res
 
-# proper_noun_cycle -> Noun [ "," proper_noun_cycle ]
-def proper_noun_cycle(tokens):
+# NounCycle -> Noun [ "," NounCycle ]
+def noun_cycle(tokens):
     res = False
     if noun(tokens):
         res = True
         if tokens[iterator][1] == ",":
             empatar()
             res = False
-            if proper_noun_cycle(tokens):
+            if noun_cycle(tokens):
                 res = True
     return res
 
-# argument_cycle -> Basic_Type [ "," any_basic ]
+# argument_cycle -> Basic_Type [ "," argument_cycle ]
 def argument_cycle(tokens):
     res = False
     if basic(tokens):
@@ -256,7 +263,7 @@ def string(tokens):
     if tokens[iterator][1] == "STRSTART":
         empatar()
         try:
-            while(tokens[iterator][1] != "STRSTOP"):
+            while(tokens[iterator][1] != "STRSTART"):
                 empatar()
         except IndexError:
             return False
@@ -308,6 +315,7 @@ def sintactico(source):
     name_of_file = "tokens.txt"
     tokens  = tokens_from_file(name_of_file)
     return classs(tokens)
+
 
 if __name__ == "__main__":
     name_of_file = "tokens.txt"
