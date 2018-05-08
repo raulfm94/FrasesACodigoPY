@@ -263,7 +263,7 @@ def tokenize(file_name):
 
 
 def print_to_file(content):
-    with open("../../output/compiled_python.py", "w") as txt_file:
+    with open("../output/compiled_python.py", "w") as txt_file:
         txt_file.write(content)
 
 
@@ -274,10 +274,9 @@ def print_tuple(tokens):
     print "\n"
 
 
-def convert_to_code():
-    if __name__ == "__main__":
-        file_name = "../tokens.txt"
-        tokens = tokenize(file_name)
-        # print_tuple(tokens)
-        # print build_code_string(tokens)
-        print_to_file(build_code_string(tokens))
+def convert_to_code(source):
+    file_name = source
+    tokens = tokenize(file_name)
+    # print_tuple(tokens)
+    # print build_code_string(tokens)
+    print_to_file(build_code_string(tokens))

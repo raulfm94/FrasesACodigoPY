@@ -4,7 +4,6 @@ from nltk.sem import Valuation, Model
 
 
 def semantic(paragraph):
-    print(paragraph)
     functionDefine = {}
     onString = False
     nextTag = ""
@@ -16,7 +15,6 @@ def semantic(paragraph):
             if onString == False:
                 if nextTag == tag:
                     functionDefine[previusTag] = 2
-                    print(functionDefine[previusTag])
                     nextTag = ""
                     previusTag= ""
                 else:

@@ -70,5 +70,4 @@ def lexical(input_text):
         if sentence_print is True:
             sentence.append(("PTRSTOP", "PTRSTOP"))
 
-
     return example_sent

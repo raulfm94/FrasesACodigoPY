@@ -26,7 +26,6 @@ def tokens_from_file(name_of_file):
         list2.append('')
     zipped = zip(list2,list1,)
     file.close()
-    print(zip)
     return list(zipped)
 
 # def access_to_touple(tokens):
@@ -312,7 +311,7 @@ def aray(tokens):
     return res
 
 def sintactico(source):
-    name_of_file = "tokens.txt"
+    name_of_file = source
     tokens  = tokens_from_file(name_of_file)
     return classs(tokens)
 
