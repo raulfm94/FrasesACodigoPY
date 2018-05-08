@@ -33,7 +33,7 @@ def semantic(paragraph):
                         nextTag = "ASSIGN"
                         previusTag = value
             if onString == True:
-                if tag == "STRSTOP":
+                if tag == "STRSTART":
                     onString = False
 
         for value, tag in sentence:
@@ -46,7 +46,7 @@ def semantic(paragraph):
                         print(functionDefine[value])
                         return error
             if onString == True:
-                if tag == "STRSTOP":
+                if tag == "STRSTART":
                     onString = False
 
     return True
