@@ -1,7 +1,13 @@
 
+<<<<<<< HEAD
 # Created by https://www.gitignore.io/api/python,pycharm
 
 ### PyCharm ###
+=======
+# Created by https://www.gitignore.io/api/python,pycharm,intellij
+
+### Intellij ###
+>>>>>>> a00f2dd7445a7bd094ef2f0306832d9d444cf969
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
@@ -9,7 +15,11 @@
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+<<<<<<< HEAD
 .idea/
+=======
+
+>>>>>>> a00f2dd7445a7bd094ef2f0306832d9d444cf969
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids
@@ -55,7 +65,11 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+<<<<<<< HEAD
 ### PyCharm Patch ###
+=======
+### Intellij Patch ###
+>>>>>>> a00f2dd7445a7bd094ef2f0306832d9d444cf969
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
 # *.iml
@@ -66,6 +80,49 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+<<<<<<< HEAD
+=======
+### PyCharm ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff:
+
+# Sensitive or high-churn files:
+
+# Gradle:
+
+# CMake
+
+# Mongo Explorer plugin:
+
+## File-based project format:
+
+## Plugin-specific files:
+
+# IntelliJ
+
+# mpeltonen/sbt-idea plugin
+
+# JIRA plugin
+
+# Cursive Clojure plugin
+
+# Ruby plugin and RubyMine
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+
+### PyCharm Patch ###
+# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+
+# *.iml
+# modules.xml
+# .idea/misc.xml
+# *.ipr
+
+# Sonarlint plugin
+
+>>>>>>> a00f2dd7445a7bd094ef2f0306832d9d444cf969
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -167,6 +224,7 @@ venv.bak/
 .mypy_cache/
 
 
+<<<<<<< HEAD
 # Created by https://www.gitignore.io/api/visualstudiocode
 
 ### VisualStudioCode ###
@@ -180,3 +238,6 @@ venv.bak/
 
 # End of https://www.gitignore.io/api/visualstudiocode
 # End of https://www.gitignore.io/api/python,pycharm
+=======
+# End of https://www.gitignore.io/api/python,pycharm,intellij
+>>>>>>> a00f2dd7445a7bd094ef2f0306832d9d444cf969

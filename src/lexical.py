@@ -14,7 +14,7 @@ def lexical(input_text):
     tagger_path = 'taggers/maxent_treebank_pos_tagger/english.pickle'
     default_tagger = nltk.data.load(tagger_path)
     model = {'To': 'TO', 'need': 'PARAMVERB', 'used': 'BODYVERB', 'increase': 'ADD', 'decrease': 'SUBS',
-             'is': 'ASSIGN', '``': 'STRSTART', '\'\'': 'STRSTOP', 'include': 'OWN', 'own': 'OWN',
+             'is': 'ASSIGN', '``': 'STRSTART', '\'\'': 'STRSTART', 'include': 'OWN', 'own': 'OWN',
              'possess': 'OWN', 'have': 'OWN', '=': 'ASSIGN', 'True': 'BOOLEAN', 'False': 'BOOLEAN',
              'true': 'BOOLEAN', 'false': 'BOOLEAN', '(': 'PARL', ')': 'PARR', '[': 'BRACKL', ']': 'BRACKR',
              'require': 'PARAMVERB', 'demand': 'PARAMVERB', 'use': 'BODYVERB', 'utilize': 'BODYVERB',
@@ -22,6 +22,8 @@ def lexical(input_text):
              'utilized': 'BODYVERB', 'exerted': 'BODYVERB', 'employed': 'BODYVERB', 'wielded': 'BODYVERB',
              'applied': 'BODYVERB', 'ha': 'OWN', 'and': ',', 'class': 'CLASS', 'Class': 'CLASS', 'CLASS': 'CLASS',
              'return': 'RETURN', 'Return': 'RETURN', '0': 'CD', 'print': 'PRINT', 'Print': 'PRINT'}
+
+    ignore_print_words = ['print', 'Print']
     tagger = nltk.tag.UnigramTagger(model=model, backoff=default_tagger)
 
     example_sent = sent_tokenize(input_text)
@@ -32,8 +34,19 @@ def lexical(input_text):
         example_sent[i] = word_tokenize(example_sent[i])
 
     for i in range(0, len(example_sent)):
+        lemmatize_print = True
+        lemmatize_string = True
         for word in example_sent[i]:
-            filtered_sentence.append(lemma.lemmatize(word))
+            if word in ignore_print_words:
+                lemmatize_print = False
+            if word is '"':
+                lemmatize_string = not lemmatize_string
+            if lemmatize_print is True and word is ',':
+                lemmatize_string = True
+            if lemmatize_print is True and lemmatize_string is True:
+                filtered_sentence.append(lemma.lemmatize(word))
+            else:
+                filtered_sentence.append(word)
         example_sent[i] = filtered_sentence
         filtered_sentence = []
 
