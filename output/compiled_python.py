@@ -1,7 +1,7 @@
 class dog:
 	mood = "HAPPY"
 	energy = 100
-	coordenatePosition = 0,0
+	coordenatePosition = (0,0)
 
 	def Run(self):
 		self.MoveForward(2)
@@ -26,13 +26,11 @@ class dog:
 
 	def Bark(self):
 		print "barf,barf"
-		self.energy -= 1
 		self.mood = "BARKING"
 
 	def Lay(self):
 		print "relax"
 		print "moveBooty"
-		self.energy += 3
 
 	def Check(self):
 		print "mood:"+self.mood
